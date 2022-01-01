@@ -375,6 +375,7 @@ namespace Recreation_Center
             this.tbTicketNo.Name = "tbTicketNo";
             this.tbTicketNo.Size = new System.Drawing.Size(151, 27);
             this.tbTicketNo.TabIndex = 2;
+            this.tbTicketNo.TextChanged += new System.EventHandler(this.tbTicketNo_TextChanged);
             // 
             // label2
             // 
@@ -400,6 +401,7 @@ namespace Recreation_Center
             this.tbPrice.Name = "tbPrice";
             this.tbPrice.Size = new System.Drawing.Size(151, 27);
             this.tbPrice.TabIndex = 2;
+            this.tbPrice.TextChanged += new System.EventHandler(this.tbPrice_TextChanged);
             // 
             // groupBox2
             // 
@@ -432,6 +434,7 @@ namespace Recreation_Center
             this.Name = "AddRecord";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Record";
+            this.Load += new System.EventHandler(this.AddRecord_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.gbVisitorDetails.ResumeLayout(false);
             this.gbVisitorDetails.PerformLayout();

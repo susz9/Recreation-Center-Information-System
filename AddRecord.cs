@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -81,11 +83,18 @@ namespace Recreation_Center
                             Convert.ToDouble(tbTotalTIme.Text),
                             Convert.ToInt32(tbPrice.Text),
                             Convert.ToDouble(tbTotalAmount.Text));
-                        ((Dashboard)Application.OpenForms["Dashboard"]).addRecord(visitor);
+                        ((Dashboard)Application.OpenForms["Dashboard"]).addVisitorRecord(visitor);
+                        tbTicketNo.Text = "";
+                        tbName.Text = "";
+                        tbAddress.Text = "";
+                        tbPhone.Text = "";
+                        cbGender.Text = "";
+                        cbTicketType.Text = "";
+                        tbPrice.Text = "";
                     }
                     else
                     {
-                        ((Dashboard)Application.OpenForms["Dashboard"]).editRecord(Convert.ToInt32(tbTicketNo.Text), tbName.Text, tbAddress.Text, Convert.ToDouble(tbPhone.Text), cbGender.Text, cbTicketType.Text, datePicker.Value, dtEntryTime.Value, dtExitTime.Value, Convert.ToDouble(tbTotalTIme.Text), Convert.ToInt32(tbPrice.Text), Convert.ToDouble(tbTotalAmount.Text));
+                        ((Dashboard)Application.OpenForms["Dashboard"]). (Convert.ToInt32(tbTicketNo.Text), tbName.Text, tbAddress.Text, Convert.ToDouble(tbPhone.Text), cbGender.Text, cbTicketType.Text, datePicker.Value, dtEntryTime.Value, dtExitTime.Value, Convert.ToDouble(tbTotalTIme.Text), Convert.ToInt32(tbPrice.Text), Convert.ToDouble(tbTotalAmount.Text));
                     }
                 }
                 catch(Exception ex)
@@ -118,8 +127,51 @@ namespace Recreation_Center
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(tbPhone.Text, "[^0-9]"))
             {
-                MessageBox.Show("Please enter valid phone number", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please enter valid phone number.", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tbPhone.Text = tbPhone.Text.Remove(tbPhone.Text.Length - 1);
+            }
+        }
+
+        private void AddRecord_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                if (File.Exists("Ticket_rate.csv")) //checking existing file to load in the GridView
+                {
+                    FileStream fst = new FileStream("Ticket_rate.csv", FileMode.Open);
+                    BinaryFormatter bft = new BinaryFormatter();
+                    ticketRecord = (BindingList<TicketRate>)bft.Deserialize(fst); //Deserializing BindingList
+                    lblFileNameT.Text = "File name: " + "Ticket_rate.csv";
+                    fst.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Previous ticket rate file not found.", "Error", MessageBoxButtons.OK);
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+
+            if (!editMode)
+                btnSave.Text = "Add Record";
+            else
+                btnSave.Text = "Edit Record";
+        }
+
+        private void tbTicketNo_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(tbTicketNo.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Please enter valid ticket number.", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                tbTicketNo.Text = tbTicketNo.Text.Remove(tbTicketNo.Text.Length - 1);
+            }
+        }
+
+        private void tbPrice_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(tbPrice.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Please enter valid price amount.", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                tbPrice.Text = tbPrice.Text.Remove(tbPrice.Text.Length - 1);
             }
         }
     }
