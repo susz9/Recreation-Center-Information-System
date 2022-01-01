@@ -46,8 +46,8 @@ namespace Recreation_Center
             this.lblEntryTime = new System.Windows.Forms.Label();
             this.lblExitTime = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.entryTime = new System.Windows.Forms.DateTimePicker();
-            this.exitTime = new System.Windows.Forms.DateTimePicker();
+            this.dtEntryTime = new System.Windows.Forms.DateTimePicker();
+            this.dtExitTime = new System.Windows.Forms.DateTimePicker();
             this.btnSave = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -60,9 +60,9 @@ namespace Recreation_Center
             this.gbVisitorDetails = new System.Windows.Forms.GroupBox();
             this.tbTicketNo = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.tbPrice = new System.Windows.Forms.TextBox();
             this.lblPrice = new System.Windows.Forms.Label();
+            this.tbPrice = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.gbVisitorDetails.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -85,9 +85,9 @@ namespace Recreation_Center
             this.lblName.AutoSize = true;
             this.lblName.Location = new System.Drawing.Point(25, 43);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(49, 23);
+            this.lblName.Size = new System.Drawing.Size(55, 23);
             this.lblName.TabIndex = 1;
-            this.lblName.Text = "Name";
+            this.lblName.Text = "Name*";
             // 
             // tbName
             // 
@@ -101,9 +101,9 @@ namespace Recreation_Center
             this.lblAddress.AutoSize = true;
             this.lblAddress.Location = new System.Drawing.Point(25, 84);
             this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(64, 23);
+            this.lblAddress.Size = new System.Drawing.Size(70, 23);
             this.lblAddress.TabIndex = 1;
-            this.lblAddress.Text = "Address";
+            this.lblAddress.Text = "Address*";
             // 
             // tbAddress
             // 
@@ -117,9 +117,9 @@ namespace Recreation_Center
             this.lblPhone.AutoSize = true;
             this.lblPhone.Location = new System.Drawing.Point(25, 125);
             this.lblPhone.Name = "lblPhone";
-            this.lblPhone.Size = new System.Drawing.Size(73, 23);
+            this.lblPhone.Size = new System.Drawing.Size(79, 23);
             this.lblPhone.TabIndex = 1;
-            this.lblPhone.Text = "Phone No.";
+            this.lblPhone.Text = "Phone No.*";
             // 
             // tbPhone
             // 
@@ -127,15 +127,16 @@ namespace Recreation_Center
             this.tbPhone.Name = "tbPhone";
             this.tbPhone.Size = new System.Drawing.Size(151, 27);
             this.tbPhone.TabIndex = 2;
+            this.tbPhone.TextChanged += new System.EventHandler(this.tbPhone_TextChanged);
             // 
             // lblGender
             // 
             this.lblGender.AutoSize = true;
             this.lblGender.Location = new System.Drawing.Point(25, 166);
             this.lblGender.Name = "lblGender";
-            this.lblGender.Size = new System.Drawing.Size(58, 23);
+            this.lblGender.Size = new System.Drawing.Size(64, 23);
             this.lblGender.TabIndex = 1;
-            this.lblGender.Text = "Gender";
+            this.lblGender.Text = "Gender*";
             // 
             // cbGender
             // 
@@ -152,7 +153,8 @@ namespace Recreation_Center
             // 
             // datePicker
             // 
-            this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.datePicker.CustomFormat = "dd/MM/yyyy";
+            this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.datePicker.Location = new System.Drawing.Point(423, 40);
             this.datePicker.Name = "datePicker";
             this.datePicker.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -164,9 +166,9 @@ namespace Recreation_Center
             this.lblDate.AutoSize = true;
             this.lblDate.Location = new System.Drawing.Point(321, 43);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(41, 23);
+            this.lblDate.Size = new System.Drawing.Size(47, 23);
             this.lblDate.TabIndex = 1;
-            this.lblDate.Text = "Date";
+            this.lblDate.Text = "Date*";
             // 
             // lblTotalAmount
             // 
@@ -185,6 +187,7 @@ namespace Recreation_Center
             this.tbTotalAmount.ReadOnly = true;
             this.tbTotalAmount.Size = new System.Drawing.Size(151, 27);
             this.tbTotalAmount.TabIndex = 2;
+            this.tbTotalAmount.Text = "500";
             this.tbTotalAmount.TextChanged += new System.EventHandler(this.tbTotalPrice_TextChanged);
             // 
             // lblEntryTime
@@ -192,9 +195,9 @@ namespace Recreation_Center
             this.lblEntryTime.AutoSize = true;
             this.lblEntryTime.Location = new System.Drawing.Point(321, 84);
             this.lblEntryTime.Name = "lblEntryTime";
-            this.lblEntryTime.Size = new System.Drawing.Size(76, 23);
+            this.lblEntryTime.Size = new System.Drawing.Size(82, 23);
             this.lblEntryTime.TabIndex = 1;
-            this.lblEntryTime.Text = "Entry Time";
+            this.lblEntryTime.Text = "Entry Time*";
             // 
             // lblExitTime
             // 
@@ -216,23 +219,24 @@ namespace Recreation_Center
             this.label1.Text = "time";
             this.label1.Click += new System.EventHandler(this.lblExitTime_Click);
             // 
-            // entryTime
+            // dtEntryTime
             // 
-            this.entryTime.CustomFormat = "hh:mm tt";
-            this.entryTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.entryTime.Location = new System.Drawing.Point(423, 80);
-            this.entryTime.Name = "entryTime";
-            this.entryTime.Size = new System.Drawing.Size(151, 27);
-            this.entryTime.TabIndex = 5;
+            this.dtEntryTime.CustomFormat = "hh:mm tt";
+            this.dtEntryTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtEntryTime.Location = new System.Drawing.Point(423, 80);
+            this.dtEntryTime.Name = "dtEntryTime";
+            this.dtEntryTime.Size = new System.Drawing.Size(151, 27);
+            this.dtEntryTime.TabIndex = 5;
+            this.dtEntryTime.Value = new System.DateTime(2022, 1, 1, 17, 30, 0, 0);
             // 
-            // exitTime
+            // dtExitTime
             // 
-            this.exitTime.CustomFormat = "hh:mm tt";
-            this.exitTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.exitTime.Location = new System.Drawing.Point(423, 121);
-            this.exitTime.Name = "exitTime";
-            this.exitTime.Size = new System.Drawing.Size(151, 27);
-            this.exitTime.TabIndex = 5;
+            this.dtExitTime.CustomFormat = "hh:mm tt";
+            this.dtExitTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtExitTime.Location = new System.Drawing.Point(423, 122);
+            this.dtExitTime.Name = "dtExitTime";
+            this.dtExitTime.Size = new System.Drawing.Size(151, 27);
+            this.dtExitTime.TabIndex = 5;
             // 
             // btnSave
             // 
@@ -281,9 +285,9 @@ namespace Recreation_Center
             this.lblTicketType.AutoSize = true;
             this.lblTicketType.Location = new System.Drawing.Point(25, 212);
             this.lblTicketType.Name = "lblTicketType";
-            this.lblTicketType.Size = new System.Drawing.Size(82, 23);
+            this.lblTicketType.Size = new System.Drawing.Size(88, 23);
             this.lblTicketType.TabIndex = 1;
-            this.lblTicketType.Text = "Ticket Type";
+            this.lblTicketType.Text = "Ticket Type*";
             // 
             // cbTicketType
             // 
@@ -316,6 +320,7 @@ namespace Recreation_Center
             this.tbTotalTIme.ReadOnly = true;
             this.tbTotalTIme.Size = new System.Drawing.Size(151, 27);
             this.tbTotalTIme.TabIndex = 2;
+            this.tbTotalTIme.Text = "2";
             // 
             // chbDiscount
             // 
@@ -337,8 +342,8 @@ namespace Recreation_Center
             this.gbVisitorDetails.Controls.Add(this.label2);
             this.gbVisitorDetails.Controls.Add(this.btnSave);
             this.gbVisitorDetails.Controls.Add(this.lblName);
-            this.gbVisitorDetails.Controls.Add(this.exitTime);
-            this.gbVisitorDetails.Controls.Add(this.entryTime);
+            this.gbVisitorDetails.Controls.Add(this.dtExitTime);
+            this.gbVisitorDetails.Controls.Add(this.dtEntryTime);
             this.gbVisitorDetails.Controls.Add(this.tbTotalAmount);
             this.gbVisitorDetails.Controls.Add(this.datePicker);
             this.gbVisitorDetails.Controls.Add(this.lblTotalTIme);
@@ -376,9 +381,25 @@ namespace Recreation_Center
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(25, 259);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 23);
+            this.label2.Size = new System.Drawing.Size(77, 23);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Ticket No.";
+            this.label2.Text = "Ticket No.*";
+            // 
+            // lblPrice
+            // 
+            this.lblPrice.AutoSize = true;
+            this.lblPrice.Location = new System.Drawing.Point(321, 216);
+            this.lblPrice.Name = "lblPrice";
+            this.lblPrice.Size = new System.Drawing.Size(89, 23);
+            this.lblPrice.TabIndex = 1;
+            this.lblPrice.Text = "Ticket Price*";
+            // 
+            // tbPrice
+            // 
+            this.tbPrice.Location = new System.Drawing.Point(423, 213);
+            this.tbPrice.Name = "tbPrice";
+            this.tbPrice.Size = new System.Drawing.Size(151, 27);
+            this.tbPrice.TabIndex = 2;
             // 
             // groupBox2
             // 
@@ -395,22 +416,6 @@ namespace Recreation_Center
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Ticket Price Rate";
             // 
-            // tbPrice
-            // 
-            this.tbPrice.Location = new System.Drawing.Point(423, 213);
-            this.tbPrice.Name = "tbPrice";
-            this.tbPrice.Size = new System.Drawing.Size(151, 27);
-            this.tbPrice.TabIndex = 2;
-            // 
-            // lblPrice
-            // 
-            this.lblPrice.AutoSize = true;
-            this.lblPrice.Location = new System.Drawing.Point(321, 216);
-            this.lblPrice.Name = "lblPrice";
-            this.lblPrice.Size = new System.Drawing.Size(83, 23);
-            this.lblPrice.TabIndex = 1;
-            this.lblPrice.Text = "Ticket Price";
-            // 
             // AddRecord
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 23F);
@@ -425,6 +430,7 @@ namespace Recreation_Center
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.Name = "AddRecord";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Record";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.gbVisitorDetails.ResumeLayout(false);
@@ -454,8 +460,8 @@ namespace Recreation_Center
         private System.Windows.Forms.Label lblEntryTime;
         private System.Windows.Forms.Label lblExitTime;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker entryTime;
-        private System.Windows.Forms.DateTimePicker exitTime;
+        private System.Windows.Forms.DateTimePicker dtEntryTime;
+        private System.Windows.Forms.DateTimePicker dtExitTime;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
