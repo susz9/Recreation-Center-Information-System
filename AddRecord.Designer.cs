@@ -29,7 +29,6 @@ namespace Recreation_Center
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddRecord));
             this.btnClearForm = new System.Windows.Forms.Button();
             this.lblName = new System.Windows.Forms.Label();
@@ -55,13 +54,16 @@ namespace Recreation_Center
             this.chbDiscount = new System.Windows.Forms.CheckBox();
             this.gbVisitorDetails = new System.Windows.Forms.GroupBox();
             this.tbTicketNo = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblTicketNo = new System.Windows.Forms.Label();
             this.lblPrice = new System.Windows.Forms.Label();
             this.tbPrice = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gbTicketRate = new System.Windows.Forms.GroupBox();
+            this.lblFileName = new System.Windows.Forms.Label();
+            this.btnUnload = new System.Windows.Forms.Button();
+            this.btnImport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTicketList)).BeginInit();
             this.gbVisitorDetails.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.gbTicketRate.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClearForm
@@ -188,7 +190,6 @@ namespace Recreation_Center
             this.lblExitTime.Size = new System.Drawing.Size(65, 23);
             this.lblExitTime.TabIndex = 1;
             this.lblExitTime.Text = "Exit TIme";
-            this.lblExitTime.Click += new System.EventHandler(this.lblExitTime_Click);
             // 
             // dtEntryTime
             // 
@@ -210,6 +211,7 @@ namespace Recreation_Center
             this.dtExitTime.Name = "dtExitTime";
             this.dtExitTime.Size = new System.Drawing.Size(151, 27);
             this.dtExitTime.TabIndex = 5;
+            this.dtExitTime.ValueChanged += new System.EventHandler(this.dtExitTime_ValueChanged);
             // 
             // btnSave
             // 
@@ -228,21 +230,13 @@ namespace Recreation_Center
             this.dgvTicketList.AllowUserToAddRows = false;
             this.dgvTicketList.AllowUserToDeleteRows = false;
             this.dgvTicketList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTicketList.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvTicketList.Location = new System.Drawing.Point(6, 27);
+            this.dgvTicketList.Location = new System.Drawing.Point(6, 60);
             this.dgvTicketList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgvTicketList.MultiSelect = false;
             this.dgvTicketList.Name = "dgvTicketList";
             this.dgvTicketList.ReadOnly = true;
             this.dgvTicketList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTicketList.Size = new System.Drawing.Size(702, 202);
+            this.dgvTicketList.Size = new System.Drawing.Size(702, 189);
             this.dgvTicketList.TabIndex = 6;
             // 
             // lblTicketType
@@ -308,7 +302,7 @@ namespace Recreation_Center
             this.gbVisitorDetails.Controls.Add(this.tbTicketNo);
             this.gbVisitorDetails.Controls.Add(this.btnClearForm);
             this.gbVisitorDetails.Controls.Add(this.tbName);
-            this.gbVisitorDetails.Controls.Add(this.label2);
+            this.gbVisitorDetails.Controls.Add(this.lblTicketNo);
             this.gbVisitorDetails.Controls.Add(this.btnSave);
             this.gbVisitorDetails.Controls.Add(this.lblName);
             this.gbVisitorDetails.Controls.Add(this.dtExitTime);
@@ -346,14 +340,14 @@ namespace Recreation_Center
             this.tbTicketNo.Size = new System.Drawing.Size(151, 27);
             this.tbTicketNo.TabIndex = 2;
             // 
-            // label2
+            // lblTicketNo
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(48, 259);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 23);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Ticket No.*";
+            this.lblTicketNo.AutoSize = true;
+            this.lblTicketNo.Location = new System.Drawing.Point(48, 259);
+            this.lblTicketNo.Name = "lblTicketNo";
+            this.lblTicketNo.Size = new System.Drawing.Size(77, 23);
+            this.lblTicketNo.TabIndex = 1;
+            this.lblTicketNo.Text = "Ticket No.*";
             // 
             // lblPrice
             // 
@@ -374,28 +368,60 @@ namespace Recreation_Center
             this.tbPrice.Click += new System.EventHandler(this.tbPrice_Click);
             this.tbPrice.TextChanged += new System.EventHandler(this.tbPrice_TextChanged);
             // 
-            // groupBox2
+            // gbTicketRate
             // 
-            this.groupBox2.BackColor = System.Drawing.SystemColors.Control;
-            this.groupBox2.Controls.Add(this.dgvTicketList);
-            this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBox2.Location = new System.Drawing.Point(16, 392);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox2.Size = new System.Drawing.Size(714, 234);
-            this.groupBox2.TabIndex = 12;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Ticket Price Rate";
+            this.gbTicketRate.BackColor = System.Drawing.SystemColors.Control;
+            this.gbTicketRate.Controls.Add(this.lblFileName);
+            this.gbTicketRate.Controls.Add(this.btnUnload);
+            this.gbTicketRate.Controls.Add(this.btnImport);
+            this.gbTicketRate.Controls.Add(this.dgvTicketList);
+            this.gbTicketRate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gbTicketRate.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.gbTicketRate.Location = new System.Drawing.Point(16, 379);
+            this.gbTicketRate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.gbTicketRate.Name = "gbTicketRate";
+            this.gbTicketRate.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.gbTicketRate.Size = new System.Drawing.Size(714, 257);
+            this.gbTicketRate.TabIndex = 12;
+            this.gbTicketRate.TabStop = false;
+            this.gbTicketRate.Text = "Ticket Price Rate";
+            // 
+            // lblFileName
+            // 
+            this.lblFileName.AutoSize = true;
+            this.lblFileName.Location = new System.Drawing.Point(16, 27);
+            this.lblFileName.Name = "lblFileName";
+            this.lblFileName.Size = new System.Drawing.Size(75, 23);
+            this.lblFileName.TabIndex = 8;
+            this.lblFileName.Text = "File name:";
+            // 
+            // btnUnload
+            // 
+            this.btnUnload.Location = new System.Drawing.Point(633, 23);
+            this.btnUnload.Name = "btnUnload";
+            this.btnUnload.Size = new System.Drawing.Size(75, 30);
+            this.btnUnload.TabIndex = 7;
+            this.btnUnload.Text = "Unload";
+            this.btnUnload.UseVisualStyleBackColor = true;
+            this.btnUnload.Click += new System.EventHandler(this.btnUnload_Click);
+            // 
+            // btnImport
+            // 
+            this.btnImport.Location = new System.Drawing.Point(552, 23);
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(75, 30);
+            this.btnImport.TabIndex = 7;
+            this.btnImport.Text = "Import";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
             // AddRecord
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ClientSize = new System.Drawing.Size(747, 639);
-            this.Controls.Add(this.groupBox2);
+            this.ClientSize = new System.Drawing.Size(747, 645);
+            this.Controls.Add(this.gbTicketRate);
             this.Controls.Add(this.gbVisitorDetails);
             this.Font = new System.Drawing.Font("Poppins", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -408,7 +434,8 @@ namespace Recreation_Center
             ((System.ComponentModel.ISupportInitialize)(this.dgvTicketList)).EndInit();
             this.gbVisitorDetails.ResumeLayout(false);
             this.gbVisitorDetails.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
+            this.gbTicketRate.ResumeLayout(false);
+            this.gbTicketRate.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -438,10 +465,13 @@ namespace Recreation_Center
         private System.Windows.Forms.TextBox tbTotalTIme;
         private System.Windows.Forms.CheckBox chbDiscount;
         private System.Windows.Forms.GroupBox gbVisitorDetails;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox gbTicketRate;
         private System.Windows.Forms.TextBox tbTicketNo;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblTicketNo;
         private System.Windows.Forms.Label lblPrice;
         private System.Windows.Forms.TextBox tbPrice;
+        private System.Windows.Forms.Button btnUnload;
+        private System.Windows.Forms.Button btnImport;
+        private System.Windows.Forms.Label lblFileName;
     }
 }

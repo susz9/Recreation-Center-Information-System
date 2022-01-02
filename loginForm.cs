@@ -19,45 +19,32 @@ namespace Recreation_Center
             InitializeComponent();
         }
 
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-    
-
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            //storing windows form values in variables
             string username = tbUsername.Text;
             string password = tbPassword.Text;
             string userType = Convert.ToString(cbUserType.SelectedItem);
 
-            if (username == "" && password == "")
+            if (username == "" && password == "") //checking empty fields
             {
                 MessageBox.Show(
                     "Please enter the username and password.",
                     "Invalid input");
             }
-            else if (username == "" || password == "")
-            {
-                MessageBox.Show(
-                    "Please enter correct username and password.",
-                    "Invalid user credentials.");
-            }
-            else if (cbUserType.SelectedItem == default)
+            else if (cbUserType.SelectedItem == default) //validating user type
             {
                 MessageBox.Show(
                     "Please select user type.",
                     "Invalid user credentials.");
             }
-            else if (username == "admin_susan" && password == "admin" && userType == "Admin")
+            else if (username == "admin_susan" && password == "admin" && userType == "Admin") //validating user credentials
             {
-                MessageBox.Show("welcome");
-                Dashboard dashboard = new Dashboard(username, userType);
+                Dashboard dashboard = new Dashboard(username, userType); //passing username and usertype values to dashboard form
                 this.Hide();
                 dashboard.Show();
             }
-            else if (username == "staff_susan" && password == "staff" && userType == "Staff")
+            else if (username == "staff_susan" && password == "staff" && userType == "Staff") //validating user credentials
             {
                 Dashboard dashboard = new Dashboard(username, userType);
                 this.Hide();
@@ -68,13 +55,11 @@ namespace Recreation_Center
                 MessageBox.Show("Please enter the correct login details.", "Invalid login");
 
             }
-
-
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Application.Exit();
+            System.Windows.Forms.Application.Exit(); //closing application
         }
     }
 }

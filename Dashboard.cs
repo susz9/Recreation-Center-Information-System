@@ -31,31 +31,31 @@ namespace Recreation_Center
         public Dashboard(string getUsername, string getUserType)
         {
             InitializeComponent();
+            //retriving username and usertype values from LoginForm
             this.username = getUsername;
             this.usertType = getUserType;
         }
 
         private void Dashboard_Load(object sender, EventArgs e) //After Login
         {
+            //setting defaults on form load event
             lblUsername.Text = username;
             lblUserType.Text = usertType;
+            tbIndex.Visible = false;
 
             try {
-                if (File.Exists("Visitor_record.csv")) //checking existing file to load in the GridView
+                if (File.Exists("Visitor_record.csv")) //checking existing visitor record file to load in the GridView
                 {
                     FileStream fs = new FileStream("Visitor_record.csv", FileMode.Open);
                     BinaryFormatter bf = new BinaryFormatter();
                     visitorRecord = (BindingList<Visitors>)bf.Deserialize(fs); //Deserializing BindingList
-                    lblFileName.Text = "File name: " + "Visitor_record.csv";
+                    lblFileName.Text = "File name: " + "Visitor_record.csv"; //setting default filename
                     fs.Close();
-                  
                 }
-                else
-                {
-                    //MessageBox.Show("Previous visitor record file not found", "Error", MessageBoxButtons.OK);
-                }
-            }catch(Exception ex) { MessageBox.Show(ex.Message); }
+            }
+            catch(Exception ex) { MessageBox.Show(ex.Message); } //excepting handling for possible errors
 
+            //granting access to admin and user
             if (lblUserType.Text == "Admin")
             {
                 btnTicketPanel.Visible = true;
@@ -75,25 +75,17 @@ namespace Recreation_Center
                     FileStream fst = new FileStream("Ticket_rate.csv", FileMode.Open);
                     BinaryFormatter bft = new BinaryFormatter();
                     ticketRecord = (BindingList<TicketRate>)bft.Deserialize(fst); //Deserializing BindingList
-                    lblFileNameT.Text = "File name: " + "Ticket_rate.csv";
+                    lblFileNameT.Text = "File name: " + "Ticket_rate.csv"; //setting default filename
                     fst.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Previous ticket rate file not found.","Error",MessageBoxButtons.OK);
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
 
-
-
             dgvVisitors.DataSource = visitorRecord;
             dgvVisitors.Columns["ticketNo"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; //gridView column size fill
 
-            dgvTicketRate.DataSource = ticketRecord; //setting GridView datasource with visitors' record
-            dgvTicketRate.Columns["Index"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-
+            dgvTicketRate.DataSource = ticketRecord; //setting GridView datasource with ticketrate' record
+            //dgvTicketRate.Columns["Index"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         //Switching between tabs with button control
@@ -117,11 +109,13 @@ namespace Recreation_Center
             if (result == DialogResult.Yes)
                 System.Windows.Forms.Application.Exit();
         }
+
         //minimize window (form)
         private void btnMinimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
         }
+
         //asking user to log out when clicked
         private void btnLogOut_Click(object sender, EventArgs e)
         {
@@ -134,27 +128,25 @@ namespace Recreation_Center
             }
         }
 
-
-        private void btnImport_Click(object sender, EventArgs e)
+        private void btnImport_Click(object sender, EventArgs e) //importing file from local folder
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "CSV File|*.csv";
+            ofd.Filter = "CSV File|*.csv"; //filtering files
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 if (!(alreadyOpenedVisitor.Contains(ofd.FileName)))
                 {
-
-                    string[] lines = File.ReadAllLines(ofd.FileName);
+                    string[] lines = File.ReadAllLines(ofd.FileName); //retriving csv file in lines to lines array
                     // filename for validation 
                     alreadyOpenedVisitor.Add(ofd.FileName);
                     string[] items;
                     bool firstline = true;
 
-                    lines.Skip<string>(1);
+                    lines.Skip<string>(1); //skipping header line
 
-                    foreach (string line in lines)
+                    foreach (string line in lines) //retriving each lines from lines array
                     {
-                        items = line.Split(',');
+                        items = line.Split(','); //spliting each items
                         if (firstline == true)
                         {
                             firstline = false;
@@ -164,8 +156,7 @@ namespace Recreation_Center
                             try
                             {
                                 Visitors visitor = new Visitors(Convert.ToInt32(items[0]), items[1], items[2], Convert.ToDouble(items[3]), items[4], items[5], Convert.ToDateTime(items[6]), Convert.ToDateTime(items[7]), Convert.ToDateTime(items[8]), items[9], Convert.ToInt32(items[10]));
-                                addVisitorRecord(visitor);
-
+                                addVisitorRecord(visitor); //passing instance of an object to add visitor record
                             }
                             catch(FormatException)
                             {
@@ -176,20 +167,19 @@ namespace Recreation_Center
                         }
 
                     }
-                    lblFileName.Text = "File name: " + ofd.SafeFileName;
+                    lblFileName.Text = "File name: " + ofd.SafeFileName; //setting file name
                 }
                 else
                 {
                     MessageBox.Show("ERROR", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                 }
             }
         }
 
         public void addVisitorRecord(Visitors e)
         {
-            visitorRecord.Add(e);
-            dgvVisitors.DataSource = visitorRecord;
+            visitorRecord.Add(e); //adding record to list
+            dgvVisitors.DataSource = visitorRecord; //setting datasource for datagridview
         }
 
         //Opens AddRecord form to add new record
@@ -197,18 +187,16 @@ namespace Recreation_Center
         {
             if(Application.OpenForms["AddRecord"] == null)
             {
-                AddRecord ar = new AddRecord();
-                ar.Show();
+                AddRecord ar = new AddRecord(); //creating object for AddRecord form
+                ar.Show(); //opening AddRecord form using object instance
             }
             else
             {
                 Application.OpenForms["AddRecord"].BringToFront();
             }
-            
         }
 
-
-
+        //saving file in local directory
         private void btnSave_Click(object sender, EventArgs e)
         {
             SaveFileDialog save = new SaveFileDialog();
@@ -217,11 +205,12 @@ namespace Recreation_Center
             save.FileName = "Visitors " + DateTime.Now.ToString("dd-MM-yyyy");
             if (save.ShowDialog() == DialogResult.OK)
             {
-                StreamWriter swr = new StreamWriter(save.FileName);
+                StreamWriter swr = new StreamWriter(save.FileName); //creating streamWriter object
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("Ticket No., Name, Address, Phone, Gender, Ticket Type, Date, Entry Time, Exit Time, Total Time, Price, Total Amount");
+                sb.AppendLine("Ticket No., Name, Address, Phone, Gender, Ticket Type, Date, Entry Time, Exit Time, Total Time, Price, Total Amount"); 
                 foreach (Visitors visitor in visitorRecord)
                 {
+                    //appending rows using StringBuilder
                     sb.AppendLine(visitor.ticketNO.ToString() + "," +
                         visitor.name + "," +
                         visitor.address + "," +
@@ -234,23 +223,19 @@ namespace Recreation_Center
                         visitor.totalTime + "," +
                         visitor.price.ToString());
                 }
-   
-                swr.Write(sb.ToString());
+                swr.Write(sb.ToString()); //writing to csb file
                 swr.Close();
                 MessageBox.Show("Visitor records saved successfully.","Saved",MessageBoxButtons.OK);
-
             }
-
-
         }
 
         public void deleteRecord(int ticketNo) 
         {
             foreach (Visitors e in visitorRecord)
             {
-                if (e.ticketNO == ticketNo)
+                if (e.ticketNO == ticketNo) //selecting key as ticketNo to delete selected row from record
                 {
-                    visitorRecord.Remove(e);
+                    visitorRecord.Remove(e); //removing from binding list
                     dgvVisitors.Refresh();
                     return;
                 }
@@ -262,7 +247,6 @@ namespace Recreation_Center
             try
             {
                 deleteRecord(Convert.ToInt32(dgvVisitors.SelectedRows[0].Cells[0].Value)); //for deleting the selected/active row
-
             }
             catch (ArgumentOutOfRangeException) { MessageBox.Show("No rows selected.","Invalid delete"); }
         }
@@ -289,7 +273,18 @@ namespace Recreation_Center
                     AddRecord ar = new AddRecord();
                     ar.editMode = true;
                     ar.Text = "Edit Record";
-                    ar.setData(Convert.ToInt32(dgvVisitors.SelectedRows[0].Cells[0].Value), dgvVisitors.SelectedRows[0].Cells[1].Value.ToString(), dgvVisitors.SelectedRows[0].Cells[2].Value.ToString(), Convert.ToDouble(dgvVisitors.SelectedRows[0].Cells[3].Value), dgvVisitors.SelectedRows[0].Cells[4].Value.ToString(), dgvVisitors.SelectedRows[0].Cells[5].Value.ToString(), Convert.ToDateTime(dgvVisitors.SelectedRows[0].Cells[6].Value), Convert.ToDateTime(dgvVisitors.SelectedRows[0].Cells[7].Value), Convert.ToDateTime(dgvVisitors.SelectedRows[0].Cells[8].Value), Convert.ToDouble(dgvVisitors.SelectedRows[0].Cells[9].Value), Convert.ToInt32(dgvVisitors.SelectedRows[0].Cells[10].Value), Convert.ToDouble(dgvVisitors.SelectedRows[0].Cells[11].Value));
+                    ar.setData(Convert.ToInt32(dgvVisitors.SelectedRows[0].Cells[0].Value),
+                        dgvVisitors.SelectedRows[0].Cells[1].Value.ToString(),
+                        dgvVisitors.SelectedRows[0].Cells[2].Value.ToString(),
+                        Convert.ToDouble(dgvVisitors.SelectedRows[0].Cells[3].Value),
+                        dgvVisitors.SelectedRows[0].Cells[4].Value.ToString(),
+                        dgvVisitors.SelectedRows[0].Cells[5].Value.ToString(),
+                        Convert.ToDateTime(dgvVisitors.SelectedRows[0].Cells[6].Value),
+                        Convert.ToDateTime(dgvVisitors.SelectedRows[0].Cells[7].Value),
+                        Convert.ToDateTime(dgvVisitors.SelectedRows[0].Cells[8].Value),
+                        dgvVisitors.SelectedRows[0].Cells[9].Value.ToString(),
+                        Convert.ToInt32(dgvVisitors.SelectedRows[0].Cells[10].Value)
+                    );
                     ar.Show();
                 }
                 else
@@ -300,21 +295,6 @@ namespace Recreation_Center
             }
             catch (ArgumentOutOfRangeException) { MessageBox.Show("No rows selected.", "Invalid action"); }
             
-        }
-
-        private void lblUsername_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblUserType_Click(object sender, EventArgs e)
-        {
-
         }
 
         //Report section coding: Chart generation
@@ -369,17 +349,13 @@ namespace Recreation_Center
             dailyChart.Series[0].IsValueShownAsLabel = true;
             dailyChart.Series[0].IsVisibleInLegend = true;
             //dailyChart.Series[0].ChartType = SeriesChartType.Pie;
-
-
         }
 
         private void btnGenerateWeekly_Click(object sender, EventArgs e)
         {
             weeklyChartVisitor.Series["Visitors"].Points.Clear();
-           
             weeklyChartEarning.Series["Earnings"].Points.Clear();
             genWeeklyChart(visitorRecord);
-            
         }
 
         public void genWeeklyChart(BindingList<Visitors> record)
@@ -407,8 +383,6 @@ namespace Recreation_Center
             string thursday = "Thursday";
             string friday = "Friday";
             string saturday = "Saturday";
-
-
 
             foreach (Visitors vis in record)
             {
@@ -472,11 +446,9 @@ namespace Recreation_Center
             weeklyChartEarning.Series[0].IsValueShownAsLabel = true;
             weeklyChartEarning.Series[0].IsVisibleInLegend = true;
             weeklyChartEarning.Series[0].ChartType = SeriesChartType.SplineArea;
-
-
-
         }
 
+        //clearing form
         private void btnClearTicket_Click(object sender, EventArgs e)
         {
             cbCategory.Text = default;
@@ -485,16 +457,15 @@ namespace Recreation_Center
             tb3Hrs.Text = "";
             tb4Hrs.Text = "";
             tbWholeDay.Text = "";
-
         }
 
+        //unloading dataGridView
         private void btnUnload_Click(object sender, EventArgs e)
         {
             lblFileName.Text = "File name: ";
             dgvVisitors.Rows.Clear();
             dgvVisitors.Refresh();
         }
-
 
         //TicketRate code starts here
         public int index = 1;
@@ -637,7 +608,7 @@ namespace Recreation_Center
                             {
                                 TicketRate ticket = new TicketRate(Convert.ToInt32(items[0]), items[1], Convert.ToInt32(items[2]), Convert.ToInt32(items[3]), Convert.ToInt32(items[4]), Convert.ToInt32(items[5]), Convert.ToInt32(items[6]));
                                 addTicketRecord(ticket);
-                                dgvTicketRate.Columns["category"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                                dgvTicketRate.Columns["Index"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                                 lblFileNameT.Text = "File name: " + ofd.SafeFileName;
                             }
                             catch (Exception)

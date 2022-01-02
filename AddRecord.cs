@@ -29,24 +29,6 @@ namespace Recreation_Center
             InitializeComponent();
         }
 
-        private void lblExitTime_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-        private void lblTotalPrice_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tbTotalPrice_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (tbName.Text == "" || tbAddress.Text == "" || tbPhone.Text == "" || cbGender.Text == "" || cbTicketType.Text == "" || tbTicketNo.Text == "" || datePicker.Text == "" || dtEntryTime.Text == "" || tbPrice.Text == "")
@@ -57,9 +39,8 @@ namespace Recreation_Center
             {
                 try
                 {
-                    if(editMode == false)
+                    if(!editMode)
                     {
-                        dtExitTime.Text = DateTime.Now.ToString("h");
                         Visitors visitor = new Visitors(Convert.ToInt32(tbTicketNo.Text),
                             tbName.Text,
                             tbAddress.Text,
@@ -82,7 +63,18 @@ namespace Recreation_Center
                     }
                     else
                     {
-                        ((Dashboard)Application.OpenForms["Dashboard"]).editVisitorRecord(Convert.ToInt32(tbTicketNo.Text), tbName.Text, tbAddress.Text, Convert.ToDouble(tbPhone.Text), cbGender.Text, cbTicketType.Text, datePicker.Value, dtEntryTime.Value, dtExitTime.Value, tbTotalTIme.Text, Convert.ToInt32(tbPrice.Text));
+                        ((Dashboard)Application.OpenForms["Dashboard"]).editVisitorRecord(
+                            Convert.ToInt32(tbTicketNo.Text),
+                            tbName.Text,
+                            tbAddress.Text,
+                            Convert.ToDouble(tbPhone.Text),
+                            cbGender.Text, cbTicketType.Text,
+                            datePicker.Value,
+                            dtEntryTime.Value,
+                            dtExitTime.Value,
+                            tbTotalTIme.Text,
+                            Convert.ToInt32(tbPrice.Text)
+                        );
                     }
                 }
                 catch(Exception ex)
@@ -92,7 +84,7 @@ namespace Recreation_Center
             }
         }
 
-        public void setData(int ticketNo, String name, String address, Double phoneNo, String gender, String ticketType, DateTime date, DateTime entryTime, DateTime exitTime, Double totalTime, int price, Double totalAmount)
+        public void setData(int ticketNo, String name, String address, Double phoneNo, String gender, String ticketType, DateTime date, DateTime entryTime, DateTime exitTime, String totalTime, int price)
         {
             tbTicketNo.Text = ticketNo.ToString();
             tbTicketNo.ReadOnly = true;
@@ -104,10 +96,8 @@ namespace Recreation_Center
             datePicker.Value = date;
             dtEntryTime.Value = entryTime;
             dtExitTime.Value = exitTime;
-            tbTotalTIme.Text = totalTime.ToString();
+            tbTotalTIme.Text = totalTime;
             tbPrice.Text = price.ToString();
-
-
         }
 
         private void tbPhone_TextChanged(object sender, EventArgs e)
@@ -121,6 +111,7 @@ namespace Recreation_Center
 
         private void AddRecord_Load(object sender, EventArgs e)
         {
+
             try
             {
                 if (File.Exists("Ticket_rate.csv")) //checking existing file to load in the GridView
@@ -137,9 +128,17 @@ namespace Recreation_Center
             dgvTicketList.Columns["Index"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             if (!editMode)
+            {
                 btnSave.Text = "Add Record";
+                dtEntryTime.Text = DateTime.Now.ToString("hh:mm tt");
+
+            }
             else
+            {
                 btnSave.Text = "Edit Record";
+                dtExitTime.Text = DateTime.Now.ToString("hh:mm tt");
+
+            }
         }
 
         private void tbTicketNo_TextChanged(object sender, EventArgs e)
@@ -172,18 +171,15 @@ namespace Recreation_Center
             tbPrice.Text = "";
         }
 
+
         private void chbDiscount_CheckedChanged(object sender, EventArgs e)
         {
             int getPrice = Convert.ToInt32(tbPrice.Text);
-            if(chbDiscount.Checked == true)
+            int discount = Convert.ToInt32(0.1 * getPrice);
+            if (chbDiscount.Checked)
             {
-                int discount = Convert.ToInt32(0.1 * getPrice);
                 int discountedPrice = getPrice - discount;
                 tbPrice.Text = discountedPrice.ToString();
-            }
-            else
-            {
-                tbPrice.Text = getPrice.ToString();
             }
         }
 
@@ -191,6 +187,76 @@ namespace Recreation_Center
         {
             chbDiscount.Checked = false;
 
+        }
+
+        private void dtExitTime_ValueChanged(object sender, EventArgs e)
+        {
+            TimeSpan duration = dtExitTime.Value - dtEntryTime.Value;
+            tbTotalTIme.Text = duration.ToString(@"h\.mm") + " hours";
+        }
+
+        private void btnUnload_Click(object sender, EventArgs e)
+        {
+            lblFileName.Text = "File name: ";
+            dgvTicketList.Rows.Clear();
+            dgvTicketList.Refresh();
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "CSV File|*.csv";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                if (!(alreadyOpenedTicket.Contains(ofd.FileName)))
+                {
+
+                    string[] lines = File.ReadAllLines(ofd.FileName);
+                    // filename for validation 
+                    alreadyOpenedTicket.Add(ofd.FileName);
+                    string[] items;
+                    bool firstline = true;
+
+                    lines.Skip<string>(1);
+
+                    foreach (string line in lines)
+                    {
+                        items = line.Split(',');
+                        if (firstline == true)
+                        {
+                            firstline = false;
+                        }
+                        else
+                        {
+                            try
+                            {
+                                TicketRate ticket = new TicketRate(Convert.ToInt32(items[0]), items[1], Convert.ToInt32(items[2]), Convert.ToInt32(items[3]), Convert.ToInt32(items[4]), Convert.ToInt32(items[5]), Convert.ToInt32(items[6]));
+                                lblFileName.Text = "File name: " + ofd.SafeFileName; //file name of imported file
+                                addTicketRecord(ticket);
+                                dgvTicketList.Columns["category"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                            }
+                            catch (Exception)
+                            {
+                                MessageBox.Show("Please import a valid CSV file.", "Invalid file import", MessageBoxButtons.OK);
+                                break;
+                            }
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("ERROR", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+            }
+        }
+
+        public void addTicketRecord(TicketRate e)
+        {
+            ticketRecord.Add(e);
+            dgvTicketList.DataSource = ticketRecord;
         }
     }
 }

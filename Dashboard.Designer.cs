@@ -67,6 +67,7 @@ namespace Recreation_Center
             this.btnUnloadT = new System.Windows.Forms.Button();
             this.lblFileNameT = new System.Windows.Forms.Label();
             this.gbTicketDetails = new System.Windows.Forms.GroupBox();
+            this.tbIndex = new System.Windows.Forms.TextBox();
             this.btnLoadEdit = new System.Windows.Forms.Button();
             this.cbCategory = new System.Windows.Forms.ComboBox();
             this.lblCategory = new System.Windows.Forms.Label();
@@ -90,19 +91,18 @@ namespace Recreation_Center
             this.btnVisitorPanel = new System.Windows.Forms.Button();
             this.btnReportPanel = new System.Windows.Forms.Button();
             this.btnTicketPanel = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblUserType = new System.Windows.Forms.Label();
             this.logo = new System.Windows.Forms.PictureBox();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblUsername = new System.Windows.Forms.Label();
             this.btnMinimize = new System.Windows.Forms.Button();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pbUserIcon = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnLogOut = new System.Windows.Forms.Button();
             this.ttClose = new System.Windows.Forms.ToolTip(this.components);
             this.lblDashboard = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.tbIndex = new System.Windows.Forms.TextBox();
             this.mainPanel.SuspendLayout();
             this.visitors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).BeginInit();
@@ -116,9 +116,9 @@ namespace Recreation_Center
             this.ticket.SuspendLayout();
             this.gbTicketDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTicketRate)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.pnlHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbUserIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // mainPanel
@@ -425,7 +425,6 @@ namespace Recreation_Center
             // 
             // ticket
             // 
-            this.ticket.Controls.Add(this.tbIndex);
             this.ticket.Controls.Add(this.btnUnloadT);
             this.ticket.Controls.Add(this.lblFileNameT);
             this.ticket.Controls.Add(this.gbTicketDetails);
@@ -462,6 +461,7 @@ namespace Recreation_Center
             // 
             // gbTicketDetails
             // 
+            this.gbTicketDetails.Controls.Add(this.tbIndex);
             this.gbTicketDetails.Controls.Add(this.btnLoadEdit);
             this.gbTicketDetails.Controls.Add(this.cbCategory);
             this.gbTicketDetails.Controls.Add(this.lblCategory);
@@ -486,6 +486,14 @@ namespace Recreation_Center
             this.gbTicketDetails.TabIndex = 10;
             this.gbTicketDetails.TabStop = false;
             this.gbTicketDetails.Text = "Ticket Details";
+            // 
+            // tbIndex
+            // 
+            this.tbIndex.Location = new System.Drawing.Point(228, 10);
+            this.tbIndex.Name = "tbIndex";
+            this.tbIndex.ReadOnly = true;
+            this.tbIndex.Size = new System.Drawing.Size(81, 27);
+            this.tbIndex.TabIndex = 13;
             // 
             // btnLoadEdit
             // 
@@ -737,22 +745,22 @@ namespace Recreation_Center
             this.btnTicketPanel.UseVisualStyleBackColor = true;
             this.btnTicketPanel.Click += new System.EventHandler(this.btnTicketPanel_Click);
             // 
-            // panel1
+            // pnlHeader
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel1.Controls.Add(this.lblUserType);
-            this.panel1.Controls.Add(this.logo);
-            this.panel1.Controls.Add(this.lblTitle);
-            this.panel1.Controls.Add(this.lblUsername);
-            this.panel1.Controls.Add(this.btnMinimize);
-            this.panel1.Controls.Add(this.pictureBox2);
-            this.panel1.Controls.Add(this.btnClose);
-            this.panel1.Controls.Add(this.btnLogOut);
-            this.panel1.Location = new System.Drawing.Point(-4, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1267, 66);
-            this.panel1.TabIndex = 3;
+            this.pnlHeader.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.pnlHeader.Controls.Add(this.lblUserType);
+            this.pnlHeader.Controls.Add(this.logo);
+            this.pnlHeader.Controls.Add(this.lblTitle);
+            this.pnlHeader.Controls.Add(this.lblUsername);
+            this.pnlHeader.Controls.Add(this.btnMinimize);
+            this.pnlHeader.Controls.Add(this.pbUserIcon);
+            this.pnlHeader.Controls.Add(this.btnClose);
+            this.pnlHeader.Controls.Add(this.btnLogOut);
+            this.pnlHeader.Location = new System.Drawing.Point(-4, 0);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1267, 66);
+            this.pnlHeader.TabIndex = 3;
             // 
             // lblUserType
             // 
@@ -764,7 +772,6 @@ namespace Recreation_Center
             this.lblUserType.Size = new System.Drawing.Size(61, 22);
             this.lblUserType.TabIndex = 0;
             this.lblUserType.Text = "usertype";
-            this.lblUserType.Click += new System.EventHandler(this.lblUserType_Click);
             // 
             // logo
             // 
@@ -797,7 +804,6 @@ namespace Recreation_Center
             this.lblUsername.Size = new System.Drawing.Size(89, 26);
             this.lblUsername.TabIndex = 0;
             this.lblUsername.Text = "username";
-            this.lblUsername.Click += new System.EventHandler(this.lblUsername_Click);
             // 
             // btnMinimize
             // 
@@ -815,17 +821,16 @@ namespace Recreation_Center
             this.btnMinimize.UseVisualStyleBackColor = false;
             this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
             // 
-            // pictureBox2
+            // pbUserIcon
             // 
-            this.pictureBox2.Image = global::Recreation_Center.Properties.Resources.user_icon_150670;
-            this.pictureBox2.Location = new System.Drawing.Point(975, 14);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(32, 34);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 3;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.pbUserIcon.Image = global::Recreation_Center.Properties.Resources.user_icon_150670;
+            this.pbUserIcon.Location = new System.Drawing.Point(975, 14);
+            this.pbUserIcon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pbUserIcon.Name = "pbUserIcon";
+            this.pbUserIcon.Size = new System.Drawing.Size(32, 34);
+            this.pbUserIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbUserIcon.TabIndex = 3;
+            this.pbUserIcon.TabStop = false;
             // 
             // btnClose
             // 
@@ -875,21 +880,13 @@ namespace Recreation_Center
             this.lblDashboard.TabIndex = 2;
             this.lblDashboard.Text = "Dashboard";
             // 
-            // tbIndex
-            // 
-            this.tbIndex.Location = new System.Drawing.Point(224, 497);
-            this.tbIndex.Name = "tbIndex";
-            this.tbIndex.ReadOnly = true;
-            this.tbIndex.Size = new System.Drawing.Size(81, 25);
-            this.tbIndex.TabIndex = 13;
-            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1262, 651);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.lblDashboard);
             this.Controls.Add(this.btnTicketPanel);
             this.Controls.Add(this.btnReportPanel);
@@ -924,10 +921,10 @@ namespace Recreation_Center
             this.gbTicketDetails.ResumeLayout(false);
             this.gbTicketDetails.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTicketRate)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbUserIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -942,14 +939,14 @@ namespace Recreation_Center
         private System.Windows.Forms.Button btnVisitorPanel;
         private System.Windows.Forms.Button btnReportPanel;
         private System.Windows.Forms.Button btnTicketPanel;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnMinimize;
         private System.Windows.Forms.ToolTip ttClose;
         private System.Windows.Forms.Button btnLogOut;
         private System.Windows.Forms.PictureBox logo;
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pbUserIcon;
         private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.Label lblUserType;
         private System.Windows.Forms.Label lblDashboard;
