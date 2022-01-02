@@ -26,13 +26,20 @@ namespace Recreation_Center
         public static BindingList<TicketRate> ticketRecord = new BindingList<TicketRate>(); //initializing new binding list with the type of Visitor
         private BindingList<string> alreadyOpenedTicket = new BindingList<string>();
 
-        public Dashboard()
+        string username;
+        string usertType;
+        public Dashboard(string getUsername, string getUserType)
         {
             InitializeComponent();
+            this.username = getUsername;
+            this.usertType = getUserType;
         }
 
         private void Dashboard_Load(object sender, EventArgs e) //After Login
         {
+            lblUsername.Text = username;
+            lblUserType.Text = usertType;
+
             try {
                 if (File.Exists("Visitor_record.csv")) //checking existing file to load in the GridView
                 {
@@ -79,10 +86,13 @@ namespace Recreation_Center
             catch (Exception ex) { MessageBox.Show(ex.Message); }
 
 
+
             dgvVisitors.DataSource = visitorRecord;
+            dgvVisitors.Columns["ticketNo"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; //gridView column size fill
+
             dgvTicketRate.DataSource = ticketRecord; //setting GridView datasource with visitors' record
-            
-            dgvTicketRate.Columns["category"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; //gridView column size fill
+            dgvTicketRate.Columns["Index"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
 
         }
 
@@ -104,8 +114,8 @@ namespace Recreation_Center
         private void btnClose_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Do you want to Exit?", "Exit?", MessageBoxButtons.YesNo);
-            if(result == DialogResult.Yes)
-                this.Close();
+            if (result == DialogResult.Yes)
+                System.Windows.Forms.Application.Exit();
         }
         //minimize window (form)
         private void btnMinimize_Click(object sender, EventArgs e)
@@ -119,7 +129,7 @@ namespace Recreation_Center
             if(result == DialogResult.Yes)
             {
                 this.Hide();
-                loginForm login = new loginForm();
+                LoginForm login = new LoginForm();
                 login.Show();
             }
         }
@@ -153,7 +163,7 @@ namespace Recreation_Center
                         {
                             try
                             {
-                                Visitors visitor = new Visitors(Convert.ToInt32(items[0]), items[1], items[2], Convert.ToDouble(items[3]), items[4], items[5], Convert.ToDateTime(items[6]), Convert.ToDateTime(items[7]), Convert.ToDateTime(items[8]), Convert.ToDouble(items[9]), Convert.ToInt32(items[10]), Convert.ToDouble(items[11]));
+                                Visitors visitor = new Visitors(Convert.ToInt32(items[0]), items[1], items[2], Convert.ToDouble(items[3]), items[4], items[5], Convert.ToDateTime(items[6]), Convert.ToDateTime(items[7]), Convert.ToDateTime(items[8]), items[9], Convert.ToInt32(items[10]));
                                 addVisitorRecord(visitor);
 
                             }
@@ -221,9 +231,8 @@ namespace Recreation_Center
                         visitor.date.ToString() + "," +
                         visitor.entryTime.ToString() + "," +
                         visitor.exitTime.ToString() + "," +
-                        visitor.totalTime.ToString() + "," +
-                        visitor.price.ToString() + "," +
-                        visitor.totalAmount.ToString());
+                        visitor.totalTime + "," +
+                        visitor.price.ToString());
                 }
    
                 swr.Write(sb.ToString());
@@ -258,13 +267,13 @@ namespace Recreation_Center
             catch (ArgumentOutOfRangeException) { MessageBox.Show("No rows selected.","Invalid delete"); }
         }
 
-        public void editVisitorRecord(int ticketNo, String name, String address, Double phoneNo, String gender, String ticketType, DateTime date, DateTime entryTime, DateTime exitTime, Double totalTime, int price, Double totalAmount)
+        public void editVisitorRecord(int ticketNo, String name, String address, Double phoneNo, String gender, String ticketType, DateTime date, DateTime entryTime, DateTime exitTime, String totalTime, int price)
         {
             foreach (Visitors e in visitorRecord)
             {
                 if (e.ticketNO == ticketNo)
                 {
-                    e.setVisitor(ticketNo, name, address, phoneNo, gender, ticketType, date, entryTime, exitTime, totalTime, price, totalAmount);
+                    e.setVisitor(ticketNo, name, address, phoneNo, gender, ticketType, date, entryTime, exitTime, totalTime, price);
                     dgvVisitors.Refresh();
                     return;
                 }
@@ -406,37 +415,37 @@ namespace Recreation_Center
                 if (vis.date.DayOfWeek.ToString().Contains(sunday))
                 {
                     sundayCount++;
-                    sundayEarning += vis.totalAmount;
+                    sundayEarning += vis.price;
                 }
                 else if (vis.date.DayOfWeek.ToString().Contains(monday))
                 {
                     mondayCount++;
-                    mondayEarning += vis.totalAmount;
+                    mondayEarning += vis.price;
                 }
                 else if (vis.date.DayOfWeek.ToString().Contains(tuesday))
                 {
                     tuesdayCount++;
-                    tuesdayEarning += vis.totalAmount;
+                    tuesdayEarning += vis.price;
                 }
                 else if (vis.date.DayOfWeek.ToString().Contains(wednesday))
                 {
                     wednesdayCount++;
-                    wednesdayEarning += vis.totalAmount;
+                    wednesdayEarning += vis.price;
                 }
                 else if (vis.date.DayOfWeek.ToString().Contains(thursday))
                 {
                     thursdayCount++;
-                    thursdayEarning += vis.totalAmount;
+                    thursdayEarning += vis.price;
                 }
                 else if (vis.date.DayOfWeek.ToString().Contains(friday))
                 {
                     fridayCount++;
-                    fridayEarning += vis.totalAmount;
+                    fridayEarning += vis.price;
                 }
                 else if (vis.date.DayOfWeek.ToString().Contains(saturday))
                 {
                     saturdayCount++;
-                    saturdayEarning += vis.totalAmount;
+                    saturdayEarning += vis.price;
                 }
             }
 
@@ -476,8 +485,6 @@ namespace Recreation_Center
             tb3Hrs.Text = "";
             tb4Hrs.Text = "";
             tbWholeDay.Text = "";
-            btnEditTicket.Visible = false;
-            btnLoadEdit.Visible = true;
 
         }
 
@@ -530,20 +537,22 @@ namespace Recreation_Center
             try
             {
                 setTicketData(
-                dgvTicketRate.SelectedRows[0].Cells[0].Value.ToString(),
-                Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[1].Value),
-                Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[2].Value),
-                Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[3].Value),
-                Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[4].Value),
-                Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[5].Value)
+                    Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[0].Value),
+                    dgvTicketRate.SelectedRows[0].Cells[1].Value.ToString(),
+                    Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[2].Value),
+                    Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[3].Value),
+                    Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[4].Value),
+                    Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[5].Value),
+                    Convert.ToInt32(dgvTicketRate.SelectedRows[0].Cells[6].Value)
                 );
                 
             }
             catch (Exception) { MessageBox.Show("No rows selected.", "Error"); }
         }
 
-        public void setTicketData(String category, int oneHr, int twoHrs, int threeHrs, int fourHrs, int wholeday)
+        public void setTicketData(int index, String category, int oneHr, int twoHrs, int threeHrs, int fourHrs, int wholeday)
         {
+            tbIndex.Text = index.ToString();
             cbCategory.Text = category;
             tb1Hr.Text = oneHr.ToString();
             tb2Hrs.Text = twoHrs.ToString();
@@ -556,12 +565,15 @@ namespace Recreation_Center
         {
             try
             {
-                editTicketRecord(index, cbCategory.Text,
-                Convert.ToInt32(tb1Hr.Text),
-                Convert.ToInt32(tb2Hrs.Text),
-                Convert.ToInt32(tb3Hrs.Text),
-                Convert.ToInt32(tb4Hrs.Text),
-                Convert.ToInt32(tbWholeDay.Text));
+                editTicketRecord(
+                    Convert.ToInt32(tbIndex.Text),
+                    cbCategory.Text,
+                    Convert.ToInt32(tb1Hr.Text),
+                    Convert.ToInt32(tb2Hrs.Text),
+                    Convert.ToInt32(tb3Hrs.Text),
+                    Convert.ToInt32(tb4Hrs.Text),
+                    Convert.ToInt32(tbWholeDay.Text)
+                );
 
             }
             catch (Exception)
@@ -652,7 +664,7 @@ namespace Recreation_Center
             dgvTicketRate.DataSource = ticketRecord;
         }
 
-        public void editTicketRecord(int index, String category, int oneHr, int twoHrs, int threeHrs, int fourHrs, int wholeDay)
+        private void editTicketRecord(int index, String category, int oneHr, int twoHrs, int threeHrs, int fourHrs, int wholeDay)
         {
             foreach (TicketRate e in ticketRecord)
             {
@@ -778,18 +790,17 @@ public class Visitors  //visitor class for visitor records
     public DateTime date { get; set; }
     public DateTime entryTime { get; set; }
     public DateTime exitTime { get; set; }
-    public Double totalTime { get; set; }
+    public String totalTime { get; set; }
     public int price { get; set; }
-    public Double totalAmount { get; set; }
 
     //Constructor for setting visitor's details
-    public Visitors(int ticketNo, String name, String address, Double phoneNo, String gender, String ticketType, DateTime date, DateTime entryTime, DateTime exitTime, Double totalTime, int price, Double totalAmount)
+    public Visitors(int ticketNo, String name, String address, Double phoneNo, String gender, String ticketType, DateTime date, DateTime entryTime, DateTime exitTime, String totalTime, int price)
     {
-        setVisitor(ticketNo, name, address, phoneNo, gender, ticketType, date, entryTime, exitTime, totalTime, price, totalAmount);
+        setVisitor(ticketNo, name, address, phoneNo, gender, ticketType, date, entryTime, exitTime, totalTime, price);
     }
 
     //defining setVisitor method to set data in defined attributes.
-    public void setVisitor(int ticketNo, String name, String address, Double phoneNo, String gender, String ticketType, DateTime date, DateTime entryTime, DateTime exitTime, Double totalTime, int price, Double totalAmount)
+    public void setVisitor(int ticketNo, String name, String address, Double phoneNo, String gender, String ticketType, DateTime date, DateTime entryTime, DateTime exitTime, String totalTime, int price)
     {
         this.ticketNo = ticketNo;
         this.name = name;
@@ -802,7 +813,6 @@ public class Visitors  //visitor class for visitor records
         this.exitTime = exitTime;
         this.totalTime = totalTime;
         this.price = price;
-        this.totalAmount = totalAmount;
     }
 
 }

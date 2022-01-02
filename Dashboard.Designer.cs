@@ -102,6 +102,7 @@ namespace Recreation_Center
             this.ttClose = new System.Windows.Forms.ToolTip(this.components);
             this.lblDashboard = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.tbIndex = new System.Windows.Forms.TextBox();
             this.mainPanel.SuspendLayout();
             this.visitors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitors)).BeginInit();
@@ -424,6 +425,7 @@ namespace Recreation_Center
             // 
             // ticket
             // 
+            this.ticket.Controls.Add(this.tbIndex);
             this.ticket.Controls.Add(this.btnUnloadT);
             this.ticket.Controls.Add(this.lblFileNameT);
             this.ticket.Controls.Add(this.gbTicketDetails);
@@ -487,6 +489,7 @@ namespace Recreation_Center
             // 
             // btnLoadEdit
             // 
+            this.btnLoadEdit.Font = new System.Drawing.Font("Poppins", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLoadEdit.Location = new System.Drawing.Point(15, 401);
             this.btnLoadEdit.Name = "btnLoadEdit";
             this.btnLoadEdit.Size = new System.Drawing.Size(186, 33);
@@ -691,12 +694,12 @@ namespace Recreation_Center
             this.dgvTicketRate.AllowUserToDeleteRows = false;
             this.dgvTicketRate.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvTicketRate.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTicketRate.Location = new System.Drawing.Point(358, 29);
+            this.dgvTicketRate.Location = new System.Drawing.Point(348, 29);
             this.dgvTicketRate.MultiSelect = false;
             this.dgvTicketRate.Name = "dgvTicketRate";
             this.dgvTicketRate.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTicketRate.Size = new System.Drawing.Size(742, 447);
-            this.dgvTicketRate.TabIndex = 0;
+            this.dgvTicketRate.Size = new System.Drawing.Size(752, 447);
+            this.dgvTicketRate.TabIndex = 1;
             // 
             // btnVisitorPanel
             // 
@@ -755,12 +758,12 @@ namespace Recreation_Center
             // 
             this.lblUserType.AutoSize = true;
             this.lblUserType.Font = new System.Drawing.Font("Poppins", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserType.Location = new System.Drawing.Point(1029, 30);
+            this.lblUserType.Location = new System.Drawing.Point(1014, 30);
             this.lblUserType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUserType.Name = "lblUserType";
-            this.lblUserType.Size = new System.Drawing.Size(49, 22);
+            this.lblUserType.Size = new System.Drawing.Size(61, 22);
             this.lblUserType.TabIndex = 0;
-            this.lblUserType.Text = "Admin";
+            this.lblUserType.Text = "usertype";
             this.lblUserType.Click += new System.EventHandler(this.lblUserType_Click);
             // 
             // logo
@@ -788,12 +791,12 @@ namespace Recreation_Center
             // 
             this.lblUsername.AutoSize = true;
             this.lblUsername.Font = new System.Drawing.Font("Poppins", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUsername.Location = new System.Drawing.Point(1027, 11);
+            this.lblUsername.Location = new System.Drawing.Point(1012, 11);
             this.lblUsername.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(88, 26);
+            this.lblUsername.Size = new System.Drawing.Size(89, 26);
             this.lblUsername.TabIndex = 0;
-            this.lblUsername.Text = "admin009";
+            this.lblUsername.Text = "username";
             this.lblUsername.Click += new System.EventHandler(this.lblUsername_Click);
             // 
             // btnMinimize
@@ -815,7 +818,7 @@ namespace Recreation_Center
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Recreation_Center.Properties.Resources.user_icon_150670;
-            this.pictureBox2.Location = new System.Drawing.Point(990, 14);
+            this.pictureBox2.Location = new System.Drawing.Point(975, 14);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(32, 34);
@@ -871,6 +874,14 @@ namespace Recreation_Center
             this.lblDashboard.Size = new System.Drawing.Size(121, 34);
             this.lblDashboard.TabIndex = 2;
             this.lblDashboard.Text = "Dashboard";
+            // 
+            // tbIndex
+            // 
+            this.tbIndex.Location = new System.Drawing.Point(224, 497);
+            this.tbIndex.Name = "tbIndex";
+            this.tbIndex.ReadOnly = true;
+            this.tbIndex.Size = new System.Drawing.Size(81, 25);
+            this.tbIndex.TabIndex = 13;
             // 
             // Dashboard
             // 
@@ -987,5 +998,6 @@ namespace Recreation_Center
         private System.Windows.Forms.Button btnLoadEdit;
         private System.Windows.Forms.Label lblFileNameT;
         private System.Windows.Forms.Button btnUnloadT;
+        private System.Windows.Forms.TextBox tbIndex;
     }
 }

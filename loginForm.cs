@@ -12,17 +12,19 @@ using System.Windows.Forms;
 
 namespace Recreation_Center
 {
-    public partial class loginForm : Form
+    public partial class LoginForm : Form
     {
-        public loginForm()
+        public LoginForm()
         {
             InitializeComponent();
         }
 
-        private void loginForm_Load(object sender, EventArgs e)
+        private void LoginForm_Load(object sender, EventArgs e)
         {
 
         }
+
+    
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
@@ -48,17 +50,16 @@ namespace Recreation_Center
                     "Please select user type.",
                     "Invalid user credentials.");
             }
-            else if (username == "admin" && password == "admin" && cbUserType.Text == "Admin")
+            else if (username == "admin_susan" && password == "admin" && userType == "Admin")
             {
                 MessageBox.Show("welcome");
-                Dashboard dashboard = new Dashboard();
+                Dashboard dashboard = new Dashboard(username, userType);
                 this.Hide();
                 dashboard.Show();
             }
-            else if (username == "staff" && password == "staff" && cbUserType.Text == "Staff")
+            else if (username == "staff_susan" && password == "staff" && userType == "Staff")
             {
-                MessageBox.Show("welcome");
-                Dashboard dashboard = new Dashboard();
+                Dashboard dashboard = new Dashboard(username, userType);
                 this.Hide();
                 dashboard.Show();
             }
@@ -69,6 +70,11 @@ namespace Recreation_Center
             }
 
 
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
         }
     }
 }
