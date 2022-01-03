@@ -4,3 +4,5 @@ visitor records of a recreation center is saved and imported via csv file and di
 in a gridView control. This program also has admin or staff functionality where admin has
 all acess of system while staff has no access to ticket section. And also,
 weekly and daily report is presented via  charts and for sorting bubble sort algorith is used in the program.
+
+Note: Refer documentation file above for user manual and technical report.
